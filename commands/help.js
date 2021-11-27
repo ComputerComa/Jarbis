@@ -19,6 +19,6 @@ module.exports = {
 			{name: `/issue`, value : `Shows the url to the Github issues page.`},
 		)
         .setFooter('Thanks for the song suggestion!')
-        interaction.reply({embeds: [HelpEmbed], ephemeral: true })
+        interaction.reply({embeds: [helpembed], ephemeral: true })
     }
 };

@@ -1,10 +1,18 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-
+const Discord = require("discord.js");
+const MessageEmbed = Discord.MessageEmbed
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ping')
         .setDescription('Replies with pong'),
     async execute(interaction) {
-        interaction.reply({ content: 'Pong' })
+        const pingEmbed = new MessageEmbed()
+		    .setColor('#ffff00')
+		    .setTitle("Ping....")
+		    .setDescription('...Pong')
+		    .setAuthor("SOTDBOT#1214")
+		    .addField("-----",`Current Latency: ${interaction.client.ws.ping} ms.`)
+
+        interaction.reply({embeds: [pingEmbed], ephemeral: true })
     }
 };
