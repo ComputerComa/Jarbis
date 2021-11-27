@@ -27,8 +27,9 @@ dotenv.config();
 const TOKEN = process.env['TOKEN'];
 
 
-const TEST_GUILD_ID = process.env['TEST_GUILD_ID'];
-
+//const TEST_GUILD_ID = process.env['TEST_GUILD_ID'];
+const TEST_GUILD_ID = false
+const CLIENT_ID = process.env['CLIENT_ID']
 
 const commands = [];
 
@@ -43,7 +44,10 @@ for (const file of commandFiles) {
 
 // When the client is ready, this only runs once
 client.once('ready', () => {
-    console.log('Ready!');
+    //set the bot status
+    client.user.setActivity("with the spotify mixtape" ,{type: "PLAYING"}) 
+    console.log(`Logged in as ${client.user.id}`);
+    
     // Registering the commands in the client
     const CLIENT_ID = client.user.id;
     const rest = new REST({
