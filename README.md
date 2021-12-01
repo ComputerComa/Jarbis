@@ -15,3 +15,4 @@ Johnny 5 is a multipurpose Discord bot with multiple functionalities.
  - [ ] Ticket Tracking
  - [ ] Web UI
  - Other features as deemed useful / suggested
+   - Feel free to make suggestions
