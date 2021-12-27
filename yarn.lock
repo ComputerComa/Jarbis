@@ -232,11 +232,6 @@
   "resolved" "https://registry.npmjs.org/ieee754/-/ieee754-1.2.1.tgz"
   "version" "1.2.1"
 
-"index.js@^0.0.3":
-  "integrity" "sha1-JzOx9IbciQ7QJpiQJPWC2DXFI6w="
-  "resolved" "https://registry.npmjs.org/index.js/-/index.js-0.0.3.tgz"
-  "version" "0.0.3"
-
 "is-obj@^2.0.0":
   "integrity" "sha512-drqDG3cbczxxEJRoOXcOjtdp1J/lyp1mNn0xaznRs8+muBhgQcrnbspox5X5fOw0HnMnbfDzvnEMEtqDEJEo8w=="
   "resolved" "https://registry.npmjs.org/is-obj/-/is-obj-2.0.0.tgz"
