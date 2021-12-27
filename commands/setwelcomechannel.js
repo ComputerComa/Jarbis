@@ -27,9 +27,11 @@ module.exports = {
             settings = new GuildSettigs({
                 guild_id: interaction.guild.id,
                 welcome_channel: interaction.options.getChannel("channel").id
+                
             })
         } else{
             settings.welcome_channel_id = interaction.options.getChannel("channel").id
+            console.log(interaction.options.getChannel("channel").id)
         }
         settings.save(err => {
             if (err){
