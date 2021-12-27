@@ -5,8 +5,8 @@ const MessageEmbed = Discord.MessageEmbed
 const GuildSettigs = require("../models/GuildSettings")
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('setwelcomechannel')
-        .setDescription('Set the channel where join/leave messages will be sent')
+        .setName('kick')
+        .setDescription('Kick the user that was mentioned')
         .addChannelOption(option => option.setName("user").setDescription("The User to kick").setRequired(true)),
     async execute(interaction) {
 

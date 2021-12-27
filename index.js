@@ -21,11 +21,10 @@ const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'
 const dotenv = require('dotenv');
 dotenv.config();
 const TOKEN = process.env['TOKEN'];
-
-
+const DEV_TOKEN = process.env['DEV_TOKEN']
 const TEST_GUILD_ID = process.env['TEST_GUILD_ID'];
 const CLIENT_ID = process.env['CLIENT_ID']
-
+const PRODUCTION = process.envc
 const commands = [];
 
 // Creating a collection for commands in client
@@ -45,5 +44,8 @@ for (const file of eventFiles) {
     }
 }
 
-
+if (PRODUCTION == 'TRUE') {
 client.login(TOKEN);
+} else {
+    client.login(DEV_TOKEN)
+}

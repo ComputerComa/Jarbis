@@ -7,8 +7,8 @@ const TOKEN = process.env['TOKEN'];
 
 const TEST_GUILD_ID = process.env['TEST_GUILD_ID'];
 const CLIENT_ID = process.env['CLIENT_ID']
-const production = process.env['PRODUCTION']
-
+const PRODUCTION = process.env['PRODUCTION']
+const DEV_TOKEN = process.env['DEV_TOKEN']
 module.exports = {
     name: "ready",
     once: true,
@@ -17,13 +17,18 @@ module.exports = {
         console.log(`Logged in as ${
             client.user.id
         }`);
-
+        let rest = null
         // Registering the commands in the client
         const CLIENT_ID = client.user.id;
-        const rest = new REST({version: '9'}).setToken(TOKEN);
+        console.log(CLIENT_ID)
+        if (PRODUCTION == 'TRUE') {
+         rest = new REST({version: '9'}).setToken(TOKEN);
+        }else{
+         rest = new REST({version: '9'}).setToken(DEV_TOKEN); 
+        }
         (async () => {
             try {
-                if (production == 'TRUE') {
+                if (PRODUCTION == 'TRUE') {
                     await rest.put(Routes.applicationCommands(CLIENT_ID), {
                         body: commands
                     },);
@@ -32,12 +37,12 @@ module.exports = {
                     await rest.put(Routes.applicationGuildCommands(CLIENT_ID, TEST_GUILD_ID), {
                         body: commands
                     },);
+
                     console.log('Successfully registered application commands for development guild');
                 }
             } catch (error) {
                 if (error) 
                     console.error(error);
-                
             }
         })();
 
