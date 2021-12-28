@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const SOTD_History = new mongoose.Schema({
     guild_id: String,
-    announced_url: String,
+    song_ID: String,
     date_announced: Date,
 })
 

@@ -29,6 +29,11 @@ function msToHms(time,ms){
 
   return out
 }
+function getSongID(spotifyurl){
+  var split_url = spotifyurl.split("/")
+  var len = split_url.length
+  return split_url[len - 1]
+}
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('announce')
@@ -48,21 +53,12 @@ module.exports = {
         
 
     async execute(interaction) {
+      const spotify_url_to_parse = interaction.options.getString('spotify-url')
+      const songID = getSongID(spotify_url_to_parse)
 
-      var SOTDHistoryEntry = new SOTDHistory({
-        guild_id: interaction.guild.id,
-        announced_url: interaction.options.getString('spotify-url'),
-        date_announced: Date.now()
-      })
-
-      SOTDHistoryEntry.save(function (err, book) {
-        if (err) return console.error(err);
-        console.log(SOTDHistoryEntry.id.toString() + " saved to the database.");
-      });
 
       
 
-        const spotify_url_to_parse = interaction.options.getString('spotify-url')
         const ping_role = interaction.options.getRole('ping-role')
         const user_credit = interaction.options.getUser('user-credit');
         const spotifydata = await getData(spotify_url_to_parse)
@@ -105,8 +101,17 @@ module.exports = {
         )
         .setFooter('Thanks for the song suggestion!')
         await interaction.channel.send({embeds:[sotdPingEmbedWithAttribution]})
+        
+        var SOTDHistoryEntry = new SOTDHistory({
+          guild_id: interaction.guild.id,
+          song_ID: songID,
+          date_announced: Date.now()
+        })
+  
+        SOTDHistoryEntry.save();
 
-        interaction.reply({ content: 'SOTD sent', ephemeral: true })
+        interaction.reply({ content: 'Announcement Sent!', ephemeral: true })
+       
 
     }
 };
