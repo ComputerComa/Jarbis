@@ -1,8 +1,34 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { ms, s, m, h, d, minutes, seconds } = require('time-convert');
+const { ms, s, m, h, d } = require('time-convert')
 const { getData, getPreview, getTracks } = require('spotify-url-info');
 const  Discord  = require("discord.js");
 const MessageEmbed = Discord.MessageEmbed
+const SOTDHistory = require("../models/SOTDHistory")
+function zeroppad(number){
+  if(number < 10){
+    number = '0' + number
+    return number.toString()
+  }else{
+    return number.toString()
+  }
+}
+function msToHms(time,ms){
+  let pretty = ms.to(h,m,s)(time)
+  pretty[0] = zeroppad(pretty[0])
+  pretty[1] = zeroppad(pretty[1])
+  pretty[2] = zeroppad(pretty[2])
+  let out = "00:00:00"
+  if(pretty[0] == "00"){
+    pretty.splice(0,1)
+    console.log(pretty)
+  out = `${pretty[0]}:${pretty[1]}`
+  }else{
+    out = `${pretty[0]}:${pretty[1]}:${pretty[2]}`
+  }
+  console.log(out)
+
+  return out
+}
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('announce')
@@ -22,6 +48,20 @@ module.exports = {
         
 
     async execute(interaction) {
+
+      var SOTDHistoryEntry = new SOTDHistory({
+        guild_id: interaction.guild.id,
+        announced_url: interaction.options.getString('spotify-url'),
+        date_announced: Date.now()
+      })
+
+      SOTDHistoryEntry.save(function (err, book) {
+        if (err) return console.error(err);
+        console.log(SOTDHistoryEntry.id.toString() + " saved to the database.");
+      });
+
+      
+
         const spotify_url_to_parse = interaction.options.getString('spotify-url')
         const ping_role = interaction.options.getRole('ping-role')
         const user_credit = interaction.options.getUser('user-credit');
@@ -35,8 +75,7 @@ module.exports = {
             explicit = "No"
           }
         const duration = spotifydata.duration_ms
-        var pretty_duration = ms.to(h,m,s)(duration)
-        var strigified_duration = `${pretty_duration[0]} hr(s) ${pretty_duration[1]}  minute(s) ${pretty_duration[2]} second(s)`
+        var pretty_duration = msToHms(duration,ms)
         const release_precision = spotifydata.album.release_date_precision
         const date = spotifydata.album.release_date
         if(release_precision == 'day'){
@@ -46,6 +85,9 @@ module.exports = {
         }else if(release_precision == 'year'){
           dformatted = spotifydata.album.release_date
         }
+
+
+
         const sotdPingEmbedWithAttribution = new MessageEmbed()
         .setColor(dominant_color)
         .setTitle("Announcement ping.")
@@ -55,7 +97,7 @@ module.exports = {
         .addFields(
           {name: `Song`, value: `${spotifydata.name}`},
           {name: `Artist`, value: `${spotifydata.artists[0].name}`},
-          {name: `Duration`,value: `${strigified_duration}`},
+          {name: `Duration`,value: `${pretty_duration}`},
           {name: `Release ${release_precision}`, value : `${dformatted}`},
           {name: `Spotify URL`, value: `${spotify_url_to_parse}`},
           {name: `Explicit`, value: `${explicit}` },
