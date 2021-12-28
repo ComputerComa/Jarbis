@@ -20,7 +20,7 @@ module.exports = {
         let rest = null
         // Registering the commands in the client
         const CLIENT_ID = client.user.id;
-        console.log(CLIENT_ID)
+        //console.log(CLIENT_ID)
         if (PRODUCTION == 'TRUE') {
          rest = new REST({version: '9'}).setToken(TOKEN);
         }else{
