@@ -27,6 +27,7 @@ module.exports = {
     }}
             
           } else if (interaction.isButton()) {
+            console.log(interaction)
             interaction.update({content: 'Button clicked', ephemeral: true,embeds:[],components:[]})
           }
 
