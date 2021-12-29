@@ -24,7 +24,7 @@ const TOKEN = process.env['TOKEN'];
 const DEV_TOKEN = process.env['DEV_TOKEN']
 const TEST_GUILD_ID = process.env['TEST_GUILD_ID'];
 const CLIENT_ID = process.env['CLIENT_ID']
-const PRODUCTION = process.envc
+const PRODUCTION = process.env['PRODUCTION']
 const commands = [];
 
 // Creating a collection for commands in client

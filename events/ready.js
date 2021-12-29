@@ -6,7 +6,7 @@ const TOKEN = process.env['TOKEN'];
 
 
 const TEST_GUILD_ID = process.env['TEST_GUILD_ID'];
-const CLIENT_ID = process.env['CLIENT_ID']
+//const CLIENT_ID = process.env['CLIENT_ID']
 const PRODUCTION = process.env['PRODUCTION']
 const DEV_TOKEN = process.env['DEV_TOKEN']
 module.exports = {

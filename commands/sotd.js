@@ -9,6 +9,8 @@ const {
 const {getData, getPreview, getTracks} = require('spotify-url-info');
 const Discord = require("discord.js");
 const MessageEmbed = Discord.MessageEmbed
+const MessageActionRow = Discord.MessageActionRow
+const MessageButton = Discord.MessageButton
 const SOTDHistory = require("../models/SOTDHistory")
 const utils = require('../etc/utils')
 function msToHms(time, ms) {
@@ -53,16 +55,36 @@ module.exports = {
 
 
     async execute(interaction) {
-      await interaction.de
+      await interaction.deferReply()
         const spotify_url_to_parse = interaction.options.getString('spotify-url')
         const song_ID = utils.getSongID(spotify_url_to_parse)
         const guild_ID = interaction.guild.id
       let announced = await hasAnnouncedHistory(guild_ID,song_ID)
       if(announced){
         console.log("this song has been announced in this server before")
+        const BtnYes = new MessageButton()
+            .setCustomId('yes')
+            .setLabel('Yes')
+            .setStyle('PRIMARY')
+
+            const BtnNo = new MessageButton()
+            .setCustomId('no')
+            .setLabel('No')
+            .setStyle('PRIMARY')
+
         const NoticeEmbed = new MessageEmbed()
           .setColor("#FF0000")
           .setTitle("Notice")
+          .setAuthor("Johnny 5")
+          .setDescription("It appears you already have announced this song in this server.\nDo you still want to announce this song?");
+
+          const row = new MessageActionRow()
+          .addComponents(
+            BtnYes,
+            BtnNo
+          )
+          interaction.editReply({ephemeral: true, embeds: [NoticeEmbed],components: [row]})
+
       }else{
         console.log("this song has not been announced in this server before")
         const ping_role = interaction.options.getRole('ping-role')
@@ -90,7 +112,7 @@ module.exports = {
 
         
 
-        const sotdPingEmbed = new MessageEmbed().setColor(dominant_color).setTitle("Announcement ping.").setDescription(`Hey ${ping_role}! There's a new SOTD suggestion!`).setAuthor("Jhonny 5").setImage(album_image).addFields({
+        const sotdPingEmbed = new MessageEmbed().setColor(dominant_color).setTitle("Announcement ping.").setDescription(`Hey ${ping_role}! There's a new SOTD suggestion!`).setAuthor("Johnny 5").setImage(album_image).addFields({
             name: `Song`,
             value: `${
                 spotifydata.name
