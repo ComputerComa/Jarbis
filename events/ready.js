@@ -30,10 +30,16 @@ module.exports = {
             try {
                 if (PRODUCTION == 'TRUE') {
                     await rest.put(Routes.applicationCommands(CLIENT_ID), {
+                        body: []
+                    },);
+                    await rest.put(Routes.applicationCommands(CLIENT_ID), {
                         body: commands
                     },);
                     console.log('Successfully registered application commands globally');
                 } else {
+                    await rest.put(Routes.applicationGuildCommands(CLIENT_ID, TEST_GUILD_ID), {
+                        body: []
+                    },);
                     await rest.put(Routes.applicationGuildCommands(CLIENT_ID, TEST_GUILD_ID), {
                         body: commands
                     },);
