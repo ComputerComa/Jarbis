@@ -22,7 +22,7 @@ function msToHms(time, ms) {
     let out = "00:00:00"
     if (pretty[0] == "00") {
         pretty.splice(0, 1)
-        console.log(pretty)
+        //console.log(pretty)
         out = `${
             pretty[0]
         }:${
@@ -37,7 +37,7 @@ function msToHms(time, ms) {
             pretty[2]
         }`
     }
-    console.log(out)
+    //console.log(out)
 
     return out
 }
@@ -115,7 +115,7 @@ module.exports = {
       if(announced){
         //console.log("this song has been announced in this server before")
         let historyitem = await SOTDHistory.findOne({guild_id: guild_ID.toString(), song_ID: songID.toString()})
-        console.log(historyitem)
+        let date = historyitem.date_announced.toString()
         const BtnYes = new MessageButton()
             .setCustomId('yes')
             .setLabel('Yes')
@@ -130,7 +130,7 @@ module.exports = {
           .setColor("#FF0000")
           .setTitle("Notice")
           .setAuthor("Johnny 5")
-          .setDescription("It appears you already have announced this song in this server.\nDo you still want to announce this song?");
+          .setDescription(`It appears you already have announced this song in this server on _${date}_.\nDo you still want to announce this song?`);
 
           const row = new MessageActionRow()
           .addComponents(
@@ -140,17 +140,17 @@ module.exports = {
           await interaction.editReply({ephemeral: true, embeds: [NoticeEmbed],components: [row]})
 
       }else{
-        console.log("this song has not been announced in this server before")
+        //console.log("this song has not been announced in this server before")
         var SOTDHistoryEntry = new SOTDHistory({guild_id: interaction.guild.id, song_ID: songID, date_announced: Date.now()})
           SOTDHistoryEntry.save();
 
-       await interaction.reply({content: 'Announcement Sent!', ephemeral: true})
+       await interaction.editReply({content: 'Announcement Sent!', ephemeral: true})
         await interaction.channel.send({embeds: [sotdPingEmbed]})
       }
 
         
       const filter = i => i.user.id === interaction.user.id;
-      const collector = interaction.channel.createMessageComponentCollector({filter,time:15000})
+      const collector = interaction.channel.createMessageComponentCollector({filter,time:60000})
 
       collector.on('collect',async i =>{
           if(i.customId === "yes"){
