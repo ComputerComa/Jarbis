@@ -13,6 +13,7 @@ const MessageActionRow = Discord.MessageActionRow
 const MessageButton = Discord.MessageButton
 const SOTDHistory = require("../models/SOTDHistory")
 const utils = require('../etc/utils')
+
 function msToHms(time, ms) {
     let pretty = ms.to(h, m, s)(time)
     pretty[0] = utils.zeropad(pretty[0])
@@ -40,7 +41,7 @@ function msToHms(time, ms) {
 
     return out
 }
-
+function buildSotdEmbed(ping_role,user_credit,spotify_url_to_parse,){}
 
 async function hasAnnouncedHistory(serverID, songID) {
     let history_count =  await SOTDHistory.count({guild_id: serverID.toString(), song_ID: songID.toString()})
@@ -55,7 +56,7 @@ module.exports = {
 
 
     async execute(interaction) {
-      await interaction.deferReply()
+      await interaction.deferReply({ephemeral: true})
         const spotify_url_to_parse = interaction.options.getString('spotify-url')
         const song_ID = utils.getSongID(spotify_url_to_parse)
         const guild_ID = interaction.guild.id
@@ -112,32 +113,7 @@ module.exports = {
 
         
 
-        const sotdPingEmbed = new MessageEmbed().setColor(dominant_color).setTitle("Announcement ping.").setDescription(`Hey ${ping_role}! There's a new SOTD suggestion!`).setAuthor("Johnny 5").setImage(album_image).addFields({
-            name: `Song`,
-            value: `${
-                spotifydata.name
-            }`
-        }, {
-            name: `Artist`,
-            value: `${
-                spotifydata.artists[0].name
-            }`
-        }, {
-            name: `Duration`,
-            value: `${pretty_duration}`
-        }, {
-            name: `Release ${release_precision}`,
-            value: `${dformatted}`
-        }, {
-            name: `Spotify URL`,
-            value: `${spotify_url_to_parse}`
-        }, {
-            name: `Explicit`,
-            value: `${explicit}`
-        }, {
-            name: `Suggested By:`,
-            value: `${user_credit}`
-        }).setFooter('Thanks for the song suggestion!')
+        
         await interaction.channel.send({embeds: [sotdPingEmbed]})
 
         var SOTDHistoryEntry = new SOTDHistory({guild_id: interaction.guild.id, song_ID: songID, date_announced: Date.now()})
@@ -148,7 +124,19 @@ module.exports = {
       }
 
         
+      const filter = i => i.user.id === interaction.user.id;
+      const collector = interaction.channel.createMessageComponentCollector({filter,max:1})
 
+      collector.on('collect',async i =>{
+          if(i.customId === "yes"){
+              await i.update({embeds:[passable_embed],components: []})
+          }else if(i.customId === "no"){
+              await i.update({ephemeral: true,content:"This announcement was canceled!",components:[],embeds:[]})
+          }else{
+              return
+          }
+      })
 
     }
+
 };
