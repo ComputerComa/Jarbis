@@ -10,7 +10,6 @@ module.exports = {
         .setColor('#ff1111')
         .setTitle("Help Menu")
         .setDescription(`Help Documentation`)
-        .setAuthor("SOTDBOT#1214")
 		.addFields(
 			{name: `/ping`, value : `Gets the latency of the bot`},
 			{name: `/announce`, value : `Pings the specified role with a message and song info.\nAccepted parameters {spotify url} {ping role} {user}`},

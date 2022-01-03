@@ -69,38 +69,35 @@ module.exports = {
             if(interaction.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])){
             if(interaction.options.getSubcommand() === 'ban'){
                 let user = interaction.options.getUser('target')
-                let guilduser = await interaction.client.users.fetch(user)
+                let guilduser = await interaction.guild.members.fetch(user)
                 let reason = interaction.options.getString('reason')
                 try {
-                    const userembed = new MessageEmbed().setTitle("Administrative Message").setAuthor("Johnny 5").setColor("#00FF00").setDescription(`You have been banned from ${interaction.guild.name} by ${interaction.user.username} for ${reason}`)
-                    guilduser.send({embeds:[userembed]})
+                    const userembed = new MessageEmbed().setTitle("Administrative Message").setColor("#00FF00").setTimestamp().setDescription(`You have been banned from ${interaction.guild.name} by ${interaction.user.username} for ${reason}`)
+                    await user.send({embeds:[userembed]})
                     await interaction.reply(`${user} banned from ${interaction.guild.name} by ${interaction.user.username} for ${reason} `)
-                    guilduser.ban()
+                    await guilduser.ban()
                 } catch (error) {
                     await interaction.reply(`Unable to ban this member!\n Error: ${error}`)
                 }
             }else if(interaction.options.getSubcommand() === 'unban'){
                     let user = interaction.options.getUser('target')
-                    let guilduser = await interaction.client.users.fetch(user)
-                    let reason = interaction.options.getString('reason')
                 try {
-                    
-                        const userembed = new MessageEmbed().setTitle("Administrative Message").setAuthor("Johnny 5").setColor("#00FF00").setDescription(`You have been unbanned from ${interaction.guild.name} by ${interaction.user.username} for ${reason}`).setTimestamp()
-                        guilduser.send({embeds:[userembed]})
-                        await interaction.reply(`${user} unbanned from ${interaction.guild.name} by ${interaction.user.username} for ${reason} `)
-                        guilduser.unban()
+                    await interaction.guild.members.unban(user) 
+                    await interaction.reply(`${user} unbanned from ${interaction.guild.name} by ${interaction.user.username}`)
+                        
                 } catch (error) {
                     await interaction.reply(`Unable to ban this member!\n Error: ${error}`)
                 }
             }else if(interaction.options.getSubcommand() === 'kick'){
                     let user = interaction.options.getUser('target')
+                    //let dmuser = await interaction.client.users.fetch(user)
                     let guilduser = await interaction.guild.members.fetch(user)
                     let reason = interaction.options.getString('reason')
                 try {
                     
-                        const userembed = new MessageEmbed().setTitle("Administrative Message").setAuthor("Johnny 5").setColor("#00FF00").setDescription(`You have been kicked from ${interaction.guild.name} by ${interaction.user.username} for ${reason}.`).setTimestamp()
-                        guilduser.send({embeds:[userembed]})
-                        guilduser.kick()
+                        const userembed = new MessageEmbed().setTitle("Administrative Message").setColor("#00FF00").setDescription(`You have been kicked from ${interaction.guild.name} by ${interaction.user.username} for ${reason}.`).setTimestamp()
+                        await user.send({embeds:[userembed]})
+                        await guilduser.kick()
                         await interaction.reply(`${user} kicked from ${interaction.guild.name} by ${interaction.user.username} for ${reason} `)
 
                 } catch (error) {
@@ -108,17 +105,19 @@ module.exports = {
                 }
             }else if(interaction.options.getSubcommand() === 'timeout'){
                     let user = interaction.options.getUser('target')
+    
                     let guilduser = await interaction.guild.members.fetch(user)
                     let reason = interaction.options.getString('reason')
                     let duration = interaction.options.getInteger('duration')
-                    let pretty = msToHms(duration.ms)
-                    let hr = pre
+                   // let pretty = msToHms(duration.ms)
+                   // let hr = pre
                 try {
-                    guilduser.timeout(duration,reason)
-                        const userembed = new MessageEmbed().setTitle("Administrative Message").setAuthor("Johnny 5").setColor("#00FF00").setDescription(`You have been timedout in ${interaction.guild.name} by ${interaction.user.username} for ${reason}. You will be able to talk again on ${expires}.`).setTimestamp()
+                        let guilduser = await interaction.guild.members.fetch(user)
                         let now = Date.now()
-                        let expires = new date(now + duration)
-                        user.send({embeds:[userembed]})
+                        let expires = new Date(now + duration)
+                        await guilduser.timeout(duration,reason)
+                        const userembed = new MessageEmbed().setTitle("Administrative Message").setColor("#00FF00").setDescription(`You have been timedout in ${interaction.guild.name} by ${interaction.user.username} for ${reason}. You will be able to talk again on ${expires}.`).setTimestamp()
+                        await user.send({embeds:[userembed]})
                         await interaction.reply(`${user} timed out in ${interaction.guild.name} by ${interaction.user.username} for ${reason}. They will be able to talk again on ${expires}`)
 
                 } catch (error) {

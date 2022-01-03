@@ -11,7 +11,6 @@ module.exports = {
 		.setColor('#ffff00')
 		.setTitle("Add me to your server!")
 		.setDescription('Share your love of music')
-		.setAuthor("SOTDBOT#1214")
 		.addField("Invite url",`${url}`)
         interaction.reply({embeds: [inviteEmbed], ephemeral: true })
     }

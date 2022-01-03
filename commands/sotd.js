@@ -63,7 +63,7 @@ async function buildSotdEmbed(ping_role,user_credit,spotify_url_to_parse,){
         } else if (release_precision == 'year') {
             dformatted = spotifydata.album.release_date
         }
-    const sotdPingEmbed = new MessageEmbed().setColor(dominant_color).setTitle("Announcement ping.").setDescription(`Hey ${ping_role}! There's a new SOTD suggestion!`).setAuthor("Johnny 5").setImage(album_image).addFields({
+    const sotdPingEmbed = new MessageEmbed().setColor(dominant_color).setTitle("Announcement ping.").setDescription(`Hey ${ping_role}! There's a new SOTD suggestion!`).setImage(album_image).addFields({
         name: `Song`,
         value: `${
             spotifydata.name
@@ -88,7 +88,7 @@ async function buildSotdEmbed(ping_role,user_credit,spotify_url_to_parse,){
     }, {
         name: `Suggested By:`,
         value: `${user_credit}`
-    }).setFooter('Thanks for the song suggestion!')
+    }).setFooter('Thanks for the song suggestion!').setTimestamp()
 
     return sotdPingEmbed
 }
@@ -129,7 +129,6 @@ module.exports = {
         const NoticeEmbed = new MessageEmbed()
           .setColor("#FF0000")
           .setTitle("Notice")
-          .setAuthor("Johnny 5")
           .setDescription(`It appears you already have announced this song in this server on _${date}_.\nDo you still want to announce this song?`);
 
           const row = new MessageActionRow()
