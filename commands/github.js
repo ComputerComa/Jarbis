@@ -10,7 +10,6 @@ module.exports = {
 		    .setColor('#ffff00')
 		    .setTitle("Check out the project on Github!")
 		    .setDescription('Take a peek under the hood!')
-		    .setAuthor("SOTDBOT#1214")
 		    .addField("Repository link:",`https://github.com/ComputerComa/SOTDBOTV2`)
         interaction.reply({embeds: [githubEmbed], ephemeral: true })
     }

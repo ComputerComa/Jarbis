@@ -10,7 +10,6 @@ module.exports = {
 		    .setColor('#ffff00')
 		    .setTitle("Ping....")
 		    .setDescription('...Pong')
-		    .setAuthor("SOTDBOT#1214")
 		    .addField("-----",`Current Latency: ${interaction.client.ws.ping} ms.`)
 
         interaction.reply({embeds: [pingEmbed], ephemeral: true })

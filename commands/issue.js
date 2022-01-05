@@ -10,7 +10,6 @@ module.exports = {
 		.setColor('#ffff00')
 		.setTitle("Report an issue")
 		.setDescription('Error!')
-		.setAuthor("SOTDBOT#1214")
 		.addField("Issue link:",`https://github.com/ComputerComa/SOTDBOTV3/issues`)
         interaction.reply({embeds: [issueEmbed], ephemeral: true })
     }
