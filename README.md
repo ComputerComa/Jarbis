@@ -1,6 +1,6 @@
 # Jarbis
-WIP
-Johnny 5 is a multipurpose Discord bot with multiple functionalities.
+## WIP
+Jarbis is a multipurpose Discord bot with multiple functionalities.
 
  
 ## Functionality currently includes
