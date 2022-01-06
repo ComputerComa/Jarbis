@@ -1,4 +1,4 @@
-# Johnny 5
+# Jarbis
 WIP
 Johnny 5 is a multipurpose Discord bot with multiple functionalities.
 
